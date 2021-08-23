@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
+import { Observable } from 'rxjs';
+import { GridData } from 'src/app/models/grid-data';
+import { GridDataService } from 'src/app/service/grid-data/grid-data.service';
 
 @Component({
   selector: 'app-ag-grid',
@@ -8,18 +11,16 @@ import { ColDef } from 'ag-grid-community';
 })
 export class AgGridComponent implements OnInit {
   columnDefs: ColDef[] = [
-    { field: 'make', flex: 1, headerName: 'Make' },
-    { field: 'model', flex: 1 },
-    { field: 'price', flex: 1 },
+    { field: 'ID', flex: 1, headerName: 'ID' },
+    { field: 'Name', flex: 1 },
+    { field: 'Notes', flex: 1 },
   ];
 
-  rowData = [
-    { make: 'Toyota', model: 'Celica', price: 35000 },
-    { make: 'Ford', model: 'Mondeo', price: 32000 },
-    { make: 'Porsche', model: 'Boxter', price: 72000 },
-  ];
+  rowData: Observable<GridData[]> | undefined = undefined;
 
-  constructor() {}
+  constructor(private readonly gridService: GridDataService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.rowData = this.gridService.getData();
+  }
 }
